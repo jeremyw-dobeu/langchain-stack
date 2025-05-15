@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
 
   langgraph:
@@ -7,7 +8,8 @@ services:
     restart: unless-stopped
     env_file: .env
     ports:
-      - "8000:8000"
+      # bind container’s 8000 to host’s 127.0.0.1:8000 (IPv4 only)
+      - "127.0.0.1:8000:8000"
     deploy:
       resources:
         reservations:
@@ -27,4 +29,5 @@ services:
     environment:
       - REACT_APP_API_URL=http://langgraph:8000
     ports:
+      # expose UI’s port 80 on host port 3000 (all interfaces)
       - "3000:80"
