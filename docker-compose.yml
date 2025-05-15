@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+
+  langgraph:
+    build: ./langgraph
+    image: langchain-stack_langgraph:latest
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8000:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    command: uvicorn server:app --host 0.0.0.0 --port 8000
+
+  studio:
+    build: ./studio
+    image: langchain-stack_studio:latest
+    restart: unless-stopped
+    depends_on:
+      - langgraph
+    env_file: .env
+    environment:
+      - REACT_APP_API_URL=http://langgraph:8000
+    ports:
+      - "3000:80"
