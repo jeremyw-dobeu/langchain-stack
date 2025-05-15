@@ -1,5 +1,5 @@
 fastapi
 uvicorn[standard]
 openai
-langchain-core==0.1.52
+langchain-core==0.1.53
 langgraph==0.0.8
